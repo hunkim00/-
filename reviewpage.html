@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <!-- Webpage Title -->
+    <title>오겜무 리뷰작성 페이지</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+
+    <link href="https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap" rel="stylesheet">
+
+    <script>
+        $(document).ready(function () {
+            listing();
+        });
+
+        function listing() {
+            $.ajax({
+                type: 'GET',
+                url: '/game',
+                data: {},
+                success: function (response) {
+                    let rows = response['list']
+                    for (i=0; i<rows.length; i++){
+                        let title = rows[i]['title']
+                        let image = rows[i]['image']
+                        let maker = rows[i]['maker']
+                        let star = rows[i]['star']
+                        let comment = rows[i]['comment']
+                        let date = rows[i]['date']
+                        let num = rows[i]['num']
+                        let platform = rows[i]['platform']
+                        let price = rows[i]['price']
+                        star_image ='⭐'.repeat(star)
+                        let temp_html = `<div class="col">
+                                            <div class="card h-100">
+                                                <img src="${image}"
+                                                     class="card-img-top">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">${title}</h5>
+                                                    <p class="card-text">출시일:${date}</p>
+                                                    <p class="card-text">가격 :${price}</p>
+                                                    <p class="card-text">${maker}</p>
+                                                     <p class="card-text">${platform}</p>
+                                                    <p>${star_image}</p>
+                                                    <p class="mycomment">${comment}</p>
+                                                    <button onclick="delete_game(${num})" type="button" class="btn btn-dark" > 기록삭제하기 </button>
+                                                </div>
+                                            </div>
+                                        </div>`
+                        $('#cards-box').append(temp_html)
+
+                    }
+                }
+            })
+        }
+
+          function delete_game(num){
+            $.ajax({
+                type: 'POST',
+                url: '/game/delete',
+                data: {num_give:num},
+                success: function (response) {
+                    alert(response['msg'])
+                     window.location.reload()
+                }
+            });
+        }
+
+         function change_game(num,star,comment){
+            let change_comment =
+            $.ajax({
+                type: 'POST',
+                url: '/game/change',
+                data: {num_give:num,
+                       comment_give:comment,
+                        star_give:star
+                },
+                success: function (response) {
+                    alert(response['msg'])
+                     window.location.reload()
+                }
+            });
+        }
+
+
+
+
+        function posting() {
+            let url = $('#url').val()
+            let star = $('#star').val()
+            let comment = $('#comment').val()
+            let price = $('#game_price').val()
+
+            $.ajax({
+                type: 'POST',
+                url: '/game',
+                data: {url_give: url,
+                    star_give: star,
+                    comment_give: comment,
+                    price_give : price},
+                success: function (response) {
+                    alert(response['msg'])
+                     window.location.reload()
+                }
+            });
+        }
+
+
+        function open_box() {
+            $('#post-box').show()
+        }
+
+        function close_box() {
+            $('#post-box').hide()
+        }
+    </script>
+
+    <style type="text/css">
+        * {
+            font-family: "Do Hyeon", sans-serif;
+        }
+
+        h1,
+        h5 {
+            display: inline;
+        }
+
+        .info {
+            width: 100%;
+            height: 250px;
+
+            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://previews.123rf.com/images/magurok/magurok1310/magurok131000077/22712586-%EB%B2%A1%ED%84%B0-%EA%B2%8C%EC%9E%84-%ED%8C%A8%EB%93%9C-%EC%95%84%EC%9D%B4%EC%BD%98.jpg');
+            background-position: center;
+            background-size: cover;
+
+            color: white;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        .review {
+            text-align: center;
+            margin-right: 50px;
+            margin-bottom: auto;
+        }
+
+        .btn {
+            width: 300px;
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <div class="info">
+        <div style=" float: left;" id="outer-div">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">게임 URL</span>
+                </div>
+                <input type="text" class="form-control" id="url" placeholder="URL">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">게임이름</span>
+                </div>
+                <input type="text" class="form-control" id="title" placeholder="이름">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">구입가격</span>
+                </div>
+                <input type="text" class="form-control" id="price" placeholder="가격">
+            </div>
+            <div class="input-group mb-3">
+                <label class="input-group-text">평가점수</label>
+                <select class="form-select" id="star">
+                    <option selected>-- 선택하기 --</option>
+                    <option value="1">1점</option>
+                    <option value="2">2점</option>
+                    <option value="3">3점</option>
+                    <option value="4">4점</option>
+                    <option value="5">5점</option>
+                    <option value="6">6점</option>
+                    <option value="7">7점</option>
+                    <option value="8">8점</option>
+                    <option value="9">9점</option>
+                    <option value="10">10점</option>
+
+                </select>
+            </div>
+        </div>
+    </div>
+    <div style="float: right;">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">리뷰</span>
+            </div>
+            <textarea class="form-control" id="comment"
+                      cols="1000"
+                      rows="30" placeholder="조작감, 최적화, 게임리뷰 등등"></textarea>
+        </div>
+        <div class="review">
+             <button onclick="posting()" type="button" class="btn btn-dark">기록하기</button>
+        </div>
+    </div>
+</div>
+</tbody>
+</table>
+</div>
+</div>
+</body>
+
+</html>
