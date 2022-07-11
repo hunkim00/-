@@ -3,7 +3,7 @@ from pymongo import MongoClient
 
 devmongo = 'mongodb+srv://test:sparta@cluster0.stp4v.mongodb.net/?retryWrites=true&w=majority'
 client = MongoClient(devmongo)
-db = client.ogamemu
+db = client.jwtTest
 
 app = Flask(__name__)
 
@@ -33,8 +33,8 @@ def home():
         # 서버에 지정된 비밀 문자열로 토큰을 해석한다.
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         # 해석된 토큰값에서 id를 가져온다.
-        user_info = db.user.find_one({"id": payload['id']})
-        return render_template('index.html', nickname=user_info["nick"])
+        user_info = db.user.find_one({"user_id": payload['user_id']})
+        return render_template('index.html', nickname=user_info["user_nick"])
     # 토큰 시간이 만료되었다면
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
@@ -67,13 +67,15 @@ def api_login():
     id_receive = request.form['user_id']
     pw_receive = request.form['user_pw']
 
-    user = db.user.find_one({'user_id': id_receive, 'user_pw': pw_receive}, {'_id': False})
-
+    # 회원가입 때와 같은 방법으로 pw를 암호화
+    pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
+    # 암호화된 pw를 이용하여 사용자 찾기
+    user = db.user.find_one({'user_id': id_receive, 'user_pw': pw_hash}, {'_id': False})
     # 사용자가 존재하면 JWT 토큰을 만들어 발급
     if user is not None:
         # JWT 토큰에 저장될 값으로 아이디와 토큰 만료 시간을 저장
         payload = {
-            'id': id_receive,
+            'user_id': id_receive,
             'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=60)
         }
         # 시크릿 키를 사용하여 암호화 한 토큰을 생성
