@@ -50,10 +50,20 @@ def login():
 
     user = db.user.find_one({'user_id': id_receive, 'user_pw': pw_receive}, {'_id': False})
 
-    if user is None:
-        return jsonify({'msg': '유저 존재하지 않음'})
-
-    return jsonify({'user': user})
+    # 사용자가 존재하면 JWT 토큰을 만들어 발급
+    if user is not None:
+        # JWT 토큰에 저장될 값으로 아이디와 토큰 만료 시간을 저장
+        payload = {
+            'id': id_receive,
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=60)
+        }
+        # 시크릿 키를 사용하여 암호화 한 토큰을 생성
+        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+        # token 리턴
+        return jsonify({'result': 'success', 'token': token})
+    # 사용자가 없다면
+    else:
+        return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
 
 
 # 회원가입 api
