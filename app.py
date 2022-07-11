@@ -21,6 +21,10 @@ import datetime
 import hashlib
 
 
+#######
+# 화면 #
+#######
+# 홈 화면
 @app.route('/')
 def home():
     # 쿠키에 저장된 jwt 토큰을 가져온다
@@ -39,12 +43,27 @@ def home():
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
 
-# 회원 로그인 / 가입 / 탈퇴
+# 로그인 화면
+@app.route('/login')
+def login():
+    msg = request.args.get("msg")
+    return render_template('login.html', msg=msg)
+
+
+# 회원가입 화면
+@app.route('/signup')
+def register():
+    return render_template('signup.html')
+
+
+#######
+# api #
+#######
 # 로그아웃은 내가 가진 토큰을 쿠키에서 지우기
 
 # 로그인 api
 @app.route("/api/login", methods=["POST"])
-def login():
+def api_login():
     id_receive = request.form['user_id']
     pw_receive = request.form['user_pw']
 
@@ -67,8 +86,8 @@ def login():
 
 
 # 회원가입 api
-@app.route('/api/register', methods=['POST'])
-def api_register():
+@app.route('/api/signup', methods=['POST'])
+def api_signup():
     id_receive = request.form['user_id']
     pw_receive = request.form['user_pw']
     birthday_receive = request.form['user_birthday']
