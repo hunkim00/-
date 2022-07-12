@@ -46,8 +46,7 @@ def home():
 # 로그인 화면
 @app.route('/login')
 def login():
-    msg = request.args.get("msg")
-    return render_template('login.html', msg=msg)
+    return render_template('login.html')
 
 
 # 회원가입 화면
