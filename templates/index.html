@@ -8,6 +8,7 @@
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
     <title>오겜무</title>
+
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
@@ -16,19 +17,12 @@
             crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
 
-
-</head>
-
-<body>
-
-<!-- 예제 시작 -->
-
-<!-- 이 예제에서는 필요한 js, css 를 링크걸어 사용 -->
+    <!-- 이 예제에서는 필요한 js, css 를 링크걸어 사용 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/css/swiper.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/js/swiper.min.js"></script>
 
-<style type="text/css">
 
+<style>
     .swiper-container {
         height: 650px;
         border: 5px solid black;
@@ -60,59 +54,6 @@
     }
 
 </style>
-
-
-<!-- 클래스명은 변경하면 안 됨 -->
-<div class="mypost" id="post-box">
-        <div class="form-floating mb-3">
-            <input id="url" type="email" class="form-control" placeholder="name@example.com">
-            <label>게임URL</label>
-
-        </div>
-
-        <div class="form-floating">
-            <textarea id="game_price" class="form-control" placeholder="Leave a comment here"></textarea>
-            <label for="floatingTextarea2">가격</label>
-        </div>
-
-
-        <div class="input-group mb-3">
-            <label class="input-group-text" for="inputGroupSelect01">별점</label>
-            <select class="form-select" id="star">
-                <option selected>-- 선택하기 --</option>
-                <option value="1">⭐</option>
-                <option value="2">⭐⭐</option>
-                <option value="3">⭐⭐⭐</option>
-                <option value="4">⭐⭐⭐⭐</option>
-                <option value="5">⭐⭐⭐⭐⭐</option>
-            </select>
-        </div>
-        <div class="form-floating">
-            <textarea id="comment" class="form-control" placeholder="Leave a comment here"></textarea>
-            <label for="floatingTextarea2">코멘트</label>
-        </div>
-        <div class="mybtns">
-            <button onclick="posting()" type="button" class="btn btn-dark">기록하기</button>
-            <button onclick="close_box()" type="button" class="btn btn-outline-dark">닫기</button>
-
-        </div>
-    </div>
-
-<div class="swiper-container">
-    <div class="swiper-wrapper" >
-
-    </div>
-
-
-    <!-- 네비게이션 -->
-    <div class="swiper-button-next"></div><!-- 다음 버튼 (오른쪽에 있는 버튼) -->
-    <div class="swiper-button-prev"></div><!-- 이전 버튼 -->
-
-    <!-- 페이징 -->
-    <div class="swiper-pagination"></div>
-
-</div>
-
 <script>
 
     const swiper = new Swiper('.swiper-container', {
@@ -137,6 +78,13 @@
             prevEl: '.swiper-button-prev', // 이번 버튼 클래스명
         },
     });
+
+    // 로그아웃은 내가 가지고 있는 토큰만 쿠키에서 없애기
+        function logout() {
+            $.removeCookie('mytoken');
+            alert('로그아웃!')
+            window.location.href = '/login'
+        }
 
     $(document).ready(function () {
         listing();
@@ -175,6 +123,7 @@
                                                     <p>${star_image}</p>
                                                     <p class="mycomment">${comment}</p>
                                                     <button onclick="delete_game(${num})" type="button" class="btn btn-dark" > 기록삭제하기 </button>
+                                                    <button onclick="window.location.href='${url}'"> 상세페이지 </button>
 
                                                 </div>
                                             </div>
@@ -186,6 +135,7 @@
                 }
                 let review = `<div class="swiper-slide" style="font-size:10pt;">
                                 <button onclick="open_box()">게임 리뷰하기</button>
+                                <button onclick="newPage()" type="button" class="btn btn-outline-dark"> 게임찾기</button>
                             </div>`
                 swiper.appendSlide(review);
                 swiper.update();
@@ -195,69 +145,126 @@
     }
 
     function delete_game(num) {
+        $.ajax({
+            type: 'POST',
+            url: '/game/delete',
+            data: {num_give: num},
+            success: function (response) {
+                alert(response['msg'])
+                window.location.reload()
+            }
+        });
+    }
+
+    function change_game(num, star, comment) {
             $.ajax({
                 type: 'POST',
-                url: '/game/delete',
-                data: {num_give: num},
-                success: function (response) {
-                    alert(response['msg'])
-                    window.location.reload()
-                }
-            });
-        }
-
-        function change_game(num, star, comment) {
-            let change_comment =
-                $.ajax({
-                    type: 'POST',
-                    url: '/game/change',
-                    data: {
-                        num_give: num,
-                        comment_give: comment,
-                        star_give: star
-                    },
-                    success: function (response) {
-                        alert(response['msg'])
-                        window.location.reload()
-                    }
-                });
-        }
-
-
-        function posting() {
-            let url = $('#url').val()
-            let star = $('#star').val()
-            let comment = $('#comment').val()
-            let price = $('#game_price').val()
-
-            $.ajax({
-                type: 'POST',
-                url: '/game',
+                url: '/game/change',
                 data: {
-                    url_give: url,
-                    star_give: star,
+                    num_give: num,
                     comment_give: comment,
-                    price_give: price
+                    star_give: star
                 },
                 success: function (response) {
                     alert(response['msg'])
                     window.location.reload()
                 }
             });
-        }
+    }
 
 
-        function open_box() {
-            $('#post-box').show()
-        }
+    function posting() {
+        let url = $('#url').val()
+        let star = $('#star').val()
+        let comment = $('#comment').val()
+        let price = $('#game_price').val()
 
-        function close_box() {
-            $('#post-box').hide()
-        }
+        $.ajax({
+            type: 'POST',
+            url: '/game',
+            data: {
+                url_give: url,
+                star_give: star,
+                comment_give: comment,
+                price_give: price
+            },
+            success: function (response) {
+                alert(response['msg'])
+                window.location.reload()
+            }
+        });
+    }
+
+
+    function open_box() {
+        $('#post-box').show()
+    }
+
+    function close_box() {
+        $('#post-box').hide()
+    }
+
+    function newPage() {
+        window.location.href = 'https://opencritic.com/'
+    }
+
 
 </script>
+</head>
+
+<body>
+<!-- 클래스명은 변경하면 안 됨 -->
+<div class="mypost" id="post-box">
+    <div class="form-floating mb-3">
+        <input id="url" type="email" class="form-control" placeholder="name@example.com">
+        <label>게임URL</label>
+
+    </div>
+
+    <div class="form-floating">
+        <textarea id="game_price" class="form-control" placeholder="Leave a comment here"></textarea>
+        <label for="floatingTextarea2">가격</label>
+    </div>
 
 
+    <div class="input-group mb-3">
+        <label class="input-group-text" for="inputGroupSelect01">별점</label>
+        <select class="form-select" id="star">
+            <option selected>-- 선택하기 --</option>
+            <option value="1">⭐</option>
+            <option value="2">⭐⭐</option>
+            <option value="3">⭐⭐⭐</option>
+            <option value="4">⭐⭐⭐⭐</option>
+            <option value="5">⭐⭐⭐⭐⭐</option>
+        </select>
+    </div>
+    <div class="form-floating">
+        <textarea id="comment" class="form-control" placeholder="Leave a comment here"></textarea>
+        <label for="floatingTextarea2">코멘트</label>
+    </div>
+    <div class="mybtns">
+        <button onclick="posting()" type="button" class="btn btn-dark">기록하기</button>
+        <button onclick="close_box()" type="button" class="btn btn-outline-dark">닫기</button>
 
+    </div>
+</div>
+
+<div class="swiper-container">
+    <div class="swiper-wrapper">
+
+    </div>
+
+
+    <!-- 네비게이션 -->
+    <div class="swiper-button-next"></div><!-- 다음 버튼 (오른쪽에 있는 버튼) -->
+    <div class="swiper-button-prev"></div><!-- 이전 버튼 -->
+
+    <!-- 페이징 -->
+    <div class="swiper-pagination"></div>
+
+</div>
+<button onclick="logout()">
+    로그아웃
+</button>
 </body>
 </html>
