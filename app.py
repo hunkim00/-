@@ -69,7 +69,7 @@ def api_login():
         # JWT 토큰에 저장될 값으로 아이디와 토큰 만료 시간을 저장
         payload = {
             'user_id': id_receive,
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=60)
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=3600)
         }
         # 시크릿 키를 사용하여 암호화 한 토큰을 생성
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
