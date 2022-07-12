@@ -36,20 +36,21 @@
                 data: {user_id: $('#userid').val(), user_pw: $('#userpw').val()},
                 success: function (response) {
                     if (response['result'] == 'success') {
-                        // 로그인이 정상적으로 되면, 토큰을 받아옵니다.
-                        // 이 토큰을 mytoken이라는 키 값으로 쿠키에 저장합니다.
+                        // 로그인시 토큰 받아오기
+                        // mytoken 키 값으로 쿠키에 저장
                         $.cookie('mytoken', response['token']);
 
                         alert('로그인 완료!')
                         window.location.href = '/'
                     } else {
-                        // 로그인이 안되면 에러메시지를 띄웁니다.
+                        // 로그인 실패시 에러 메시지
                         alert(response['msg'])
                     }
                 }
             })
         }
-        function signup() {
+
+        function move_signup() {
             window.location.href = '/signup'
         }
     </script>
@@ -84,7 +85,7 @@
                 </div>
             </div>
         </div>
-        <button class="button is-primary is-light" onclick="signup()">회원가입</button>
+        <button class="button is-primary is-light" onclick="move_signup()">회원가입</button>
         <button class="button is-primary" onclick="login()">로그인</button>
     </div>
 </div>
