@@ -6,9 +6,9 @@ import jwt
 import datetime
 import hashlib
 
-
-client = MongoClient('mongodb+srv://test:sparta@cluster0.2qnmgye.mongodb.net/?retryWrites=true&w=majority')
-db = client.dbsparta
+# kimilm db
+client = MongoClient('mongodb+srv://test:sparta@cluster0.stp4v.mongodb.net/?retryWrites=true&w=majority')
+db = client.ogamemu
 
 app = Flask(__name__)
 
@@ -28,7 +28,7 @@ def home():
         # 서버에 지정된 비밀 문자열로 토큰을 해석한다.
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         # 해석된 토큰값에서 id를 가져온다.
-        user_info = db.user.find_one({"user_id": payload['user_id']}),{'id':False, 'user_name':False}
+        user_info = db.user.find_one({"user_id": payload['user_id']}, {'_id': False, 'user_pw': False})
         return render_template('index.html', user_info=user_info)
     # 토큰 시간이 만료되었다면
     except jwt.ExpiredSignatureError:
@@ -52,6 +52,22 @@ def register():
 @app.route('/reviewpage')
 def review():
     return  render_template('reviewpage.html')
+
+
+# 마이페이지 화면
+@app.route('/mypage/<user_id>')
+def mypage(user_id):
+    # 각 사용자의 프로필과 글을 모아볼 수 있는 공간
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        status = (user_id == payload["user_id"])  # 내 프로필이면 True, 다른 사람 프로필 페이지면 False
+
+        user_info = db.user.find_one({'user_id': user_id}, {'_id': False, 'user_pw': False})
+        return render_template('mypage.html', user_info=user_info, status=status)
+    # 토큰 시간이 만료되었거나 해석에 실패했다면
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
 
 
 #######
@@ -164,9 +180,8 @@ def game_post():
 
 @app.route("/game", methods=["GET"])
 def game_get():
-    games_list = list(db.games.find({},{'_id':False}))
-
-    return jsonify({'list':  games_list})
+    games_list = list(db.games.find({}, {'_id': False}))
+    return jsonify({'list': games_list})
 
 
 # @app.route("/game/change", methods=["POST"])
