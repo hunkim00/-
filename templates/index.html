@@ -17,100 +17,89 @@
             crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
 
-    <!-- 이 예제에서는 필요한 js, css 를 링크걸어 사용 -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/css/swiper.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/js/swiper.min.js"></script>
+    <!-- swipe -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/css/swiper.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/js/swiper.min.js"></script>
 
 
-<style>
-    .swiper-container {
-        height: 650px;
-        border: 5px solid black;
-        border-radius: 50px;
-        box-shadow: 0 0 20px #ccc inset;
-    }
-
-    .swiper-slide {
-        text-align: center;
-        display: flex; /* 내용을 중앙정렬 하기위해 flex 사용 */
-        align-items: center; /* 위아래 기준 중앙정렬 */
-        justify-content: center; /* 좌우 기준 중앙정렬 */
-    }
-
-    .swiper-slide img {
-        box-shadow: 0 0 5px #555;
-        max-width: 100%; /* 이미지 최대너비를 제한, 슬라이드에 이미지가 여러개가 보여질때 필요 */
-        /* 이 예제에서 필요해서 설정했습니다. 상황에따라 다를 수 있습니다. */
-    }
-
-    .mypost {
-        width: 95%;
-        max-width: 500px;
-        margin: 20px auto 0px auto;
-        padding: 20px;
-        box-shadow: 0px 0px 3px 0px gray;
-
-        display: none;
-    }
-
-</style>
-<script>
-
-    const swiper = new Swiper('.swiper-container', {
-
-
-        slidesPerView: 3, // 동시에 보여줄 슬라이드 갯수
-        spaceBetween: 30, // 슬라이드간 간격
-        slidesPerGroup: 3, // 그룹으로 묶을 수, slidesPerView 와 같은 값을 지정하는게 좋음
-        centeredSlides: false,
-
-        // 그룹수가 맞지 않을 경우 빈칸으로 메우기
-        // 3개가 나와야 되는데 1개만 있다면 2개는 빈칸으로 채워서 3개를 만듬
-        loopFillGroupWithBlank: true,
-        loop: true, // 무한 반복
-
-        pagination: { // 페이징
-            el: '.swiper-pagination',
-            clickable: true, // 페이징을 클릭하면 해당 영역으로 이동, 필요시 지정해 줘야 기능 작동
-        },
-        navigation: { // 네비게이션
-            nextEl: '.swiper-button-next', // 다음 버튼 클래스명
-            prevEl: '.swiper-button-prev', // 이번 버튼 클래스명
-        },
-    });
-
-    // 로그아웃은 내가 가지고 있는 토큰만 쿠키에서 없애기
-        function logout() {
-            $.removeCookie('mytoken');
-            alert('로그아웃!')
-            window.location.href = '/login'
+    <style>
+        .swiper-container {
+            height: 650px;
+            border: 5px solid black;
+            border-radius: 50px;
+            box-shadow: 0 0 20px #ccc inset;
         }
 
-    $(document).ready(function () {
-        listing();
-    });
+        .swiper-slide {
+            text-align: center;
+            display: flex; /* 내용을 중앙정렬 하기위해 flex 사용 */
+            align-items: center; /* 위아래 기준 중앙정렬 */
+            justify-content: center; /* 좌우 기준 중앙정렬 */
+        }
 
-    function listing() {
-        $.ajax({
-            type: 'GET',
-            url: '/game',
-            data: {},
-            success: function (response) {
-                swiper.removeAllSlides();
+        .swiper-slide img {
+            box-shadow: 0 0 5px #555;
+            max-width: 100%; /* 이미지 최대너비를 제한, 슬라이드에 이미지가 여러개가 보여질때 필요 */
+            /* 이 예제에서 필요해서 설정했습니다. 상황에따라 다를 수 있습니다. */
+        }
 
-                let rows = response['list']
-                for (i = 0; i < rows.length; i++) {
-                    let title = rows[i]['title']
-                    let image = rows[i]['image']
-                    let maker = rows[i]['maker']
-                    let star = rows[i]['star']
-                    let comment = rows[i]['comment']
-                    let date = rows[i]['date']
-                    let num = rows[i]['num']
-                    let platform = rows[i]['platform']
-                    let price = rows[i]['price']
-                    star_image = '⭐'.repeat(star)
-                    let temp_html = `<div class="swiper-slide">
+        .mypost {
+            width: 95%;
+            max-width: 500px;
+            margin: 20px auto 0px auto;
+            padding: 20px;
+            box-shadow: 0px 0px 3px 0px gray;
+
+            display: none;
+        }
+    </style>
+    <script>
+        const swiper = new Swiper('.swiper-container', {
+            slidesPerView: 3, // 동시에 보여줄 슬라이드 갯수
+            spaceBetween: 30, // 슬라이드간 간격
+            slidesPerGroup: 3, // 그룹으로 묶을 수, slidesPerView 와 같은 값을 지정하는게 좋음
+            centeredSlides: false,
+
+            // 그룹수가 맞지 않을 경우 빈칸으로 메우기
+            // 3개가 나와야 되는데 1개만 있다면 2개는 빈칸으로 채워서 3개를 만듬
+            loopFillGroupWithBlank: true,
+            loop: true, // 무한 반복
+
+            pagination: { // 페이징
+                el: '.swiper-pagination',
+                clickable: true, // 페이징을 클릭하면 해당 영역으로 이동, 필요시 지정해 줘야 기능 작동
+            },
+            navigation: { // 네비게이션
+                nextEl: '.swiper-button-next', // 다음 버튼 클래스명
+                prevEl: '.swiper-button-prev', // 이번 버튼 클래스명
+            },
+        });
+
+        $(document).ready(function () {
+            listing();
+        });
+
+        function listing() {
+            $.ajax({
+                type: 'GET',
+                url: '/game',
+                data: {},
+                success: function (response) {
+                    swiper.removeAllSlides();
+
+                    let rows = response['list']
+                    for (i = 0; i < rows.length; i++) {
+                        let title = rows[i]['title']
+                        let image = rows[i]['image']
+                        let maker = rows[i]['maker']
+                        let star = rows[i]['star']
+                        let comment = rows[i]['comment']
+                        let date = rows[i]['date']
+                        let num = rows[i]['num']
+                        let platform = rows[i]['platform']
+                        let price = rows[i]['price']
+                        star_image = '⭐'.repeat(star)
+                        let temp_html = `<div class="swiper-slide">
                                             <div class="card h-100">
                                                 <img src="${image}"
                                                      class="card-img-top">
@@ -129,34 +118,34 @@
                                             </div>
                                         </div>`
 
-                    swiper.appendSlide(temp_html);
+                        swiper.appendSlide(temp_html);
 
 
-                }
-                let review = `<div class="swiper-slide" style="font-size:10pt;">
+                    }
+                    let review = `<div class="swiper-slide" style="font-size:10pt;">
                                 <button onclick="open_box()">게임 리뷰하기</button>
                                 <button onclick="newPage()" type="button" class="btn btn-outline-dark"> 게임찾기</button>
                             </div>`
-                swiper.appendSlide(review);
-                swiper.update();
-            },
+                    swiper.appendSlide(review);
+                    swiper.update();
+                },
 
-        })
-    }
+            })
+        }
 
-    function delete_game(num) {
-        $.ajax({
-            type: 'POST',
-            url: '/game/delete',
-            data: {num_give: num},
-            success: function (response) {
-                alert(response['msg'])
-                window.location.reload()
-            }
-        });
-    }
+        function delete_game(num) {
+            $.ajax({
+                type: 'POST',
+                url: '/game/delete',
+                data: {num_give: num},
+                success: function (response) {
+                    alert(response['msg'])
+                    window.location.reload()
+                }
+            });
+        }
 
-    function change_game(num, star, comment) {
+        function change_game(num, star, comment) {
             $.ajax({
                 type: 'POST',
                 url: '/game/change',
@@ -170,46 +159,49 @@
                     window.location.reload()
                 }
             });
-    }
+        }
 
+        function posting() {
+            let url = $('#url').val()
+            let star = $('#star').val()
+            let comment = $('#comment').val()
+            let price = $('#game_price').val()
 
-    function posting() {
-        let url = $('#url').val()
-        let star = $('#star').val()
-        let comment = $('#comment').val()
-        let price = $('#game_price').val()
+            $.ajax({
+                type: 'POST',
+                url: '/game',
+                data: {
+                    url_give: url,
+                    star_give: star,
+                    comment_give: comment,
+                    price_give: price
+                },
+                success: function (response) {
+                    alert(response['msg'])
+                    window.location.reload()
+                }
+            });
+        }
 
-        $.ajax({
-            type: 'POST',
-            url: '/game',
-            data: {
-                url_give: url,
-                star_give: star,
-                comment_give: comment,
-                price_give: price
-            },
-            success: function (response) {
-                alert(response['msg'])
-                window.location.reload()
-            }
-        });
-    }
+        function open_box() {
+            $('#post-box').show()
+        }
 
+        function close_box() {
+            $('#post-box').hide()
+        }
 
-    function open_box() {
-        $('#post-box').show()
-    }
+        function newPage() {
+            window.location.href = 'https://opencritic.com/'
+        }
 
-    function close_box() {
-        $('#post-box').hide()
-    }
-
-    function newPage() {
-        window.location.href = 'https://opencritic.com/'
-    }
-
-
-</script>
+        // 로그아웃은 내가 가지고 있는 토큰만 쿠키에서 없애기
+        function logout() {
+            $.removeCookie('mytoken');
+            alert('로그아웃!')
+            window.location.href = '/login'
+        }
+    </script>
 </head>
 
 <body>
@@ -250,10 +242,7 @@
 </div>
 
 <div class="swiper-container">
-    <div class="swiper-wrapper">
-
-    </div>
-
+    <div class="swiper-wrapper"></div>
 
     <!-- 네비게이션 -->
     <div class="swiper-button-next"></div><!-- 다음 버튼 (오른쪽에 있는 버튼) -->
