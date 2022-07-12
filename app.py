@@ -135,6 +135,25 @@ def api_signup():
     return jsonify({'result': 'success'})
 
 
+# 회원 수정 api
+@app.route('/api/update_user', methods=['POST'])
+def api_update_user():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_id = payload["user_id"]
+        name_receive = request.form["name_give"]
+        comment_receive = request.form["comment_give"]
+        doc = {
+            'user_name': name_receive,
+            'user_comment': comment_receive
+        }
+        db.user.update_one({'user_id': user_id}, {'$set': doc})
+        return jsonify({"result": "success", 'msg': '프로필을 업데이트했습니다.'})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
+
+
 @app.route("/game", methods=["POST"])
 def game_post():
     url_receive = request.form['url_give']
