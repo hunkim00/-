@@ -250,7 +250,8 @@
     }
 
     function newPage() {
-        window.location.href = 'https://opencritic.com/'
+        var openNewWindow = window.open("about:blank");
+        openNewWindow.location.href = "https://opencritic.com";
     }
 
     // 로그아웃은 내가 가지고 있는 토큰만 쿠키에서 없애기
