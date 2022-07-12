@@ -48,6 +48,10 @@ def login():
 def register():
     return render_template('signup.html')
 
+@app.route('/reviewpage')
+def review():
+    return  render_template('reviewpage.html')
+
 
 #######
 # api #
