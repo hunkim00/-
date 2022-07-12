@@ -1,92 +1,24 @@
 <!doctype html>
-<html lang="en">
-
+<html lang="ko">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <title>오겜무</title>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
-
-    <title>오늘 게임 뭐할래?</title>
-
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
 
-    <style>
-        * {
-            font-family: 'Gowun Dodum', sans-serif;
-        }
 
-        .mytitle {
-            width: 100%;
-            height: 250px;
 
-            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://previews.123rf.com/images/magurok/magurok1310/magurok131000077/22712586-%EB%B2%A1%ED%84%B0-%EA%B2%8C%EC%9E%84-%ED%8C%A8%EB%93%9C-%EC%95%84%EC%9D%B4%EC%BD%98.jpg');
-            background-position: center;
-            background-size: cover;
-
-            color: white;
-
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .mytitle > button {
-            width: 200px;
-            height: 50px;
-
-            background-color: transparent;
-            color: white;
-
-            border-radius: 50px;
-            border: 1px solid white;
-
-            margin-top: 10px;
-        }
-
-        .mytitle > button:hover {
-            border: 2px solid white;
-        }
-
-        .mycomment {
-            color: gray;
-        }
-
-        .mycards {
-            margin: 20px auto 0px auto;
-            width: 95%;
-            max-width: 1200px;
-        }
-
-        .mypost {
-            width: 95%;
-            max-width: 500px;
-            margin: 20px auto 0px auto;
-            padding: 20px;
-            box-shadow: 0px 0px 3px 0px gray;
-
-            display: none;
-        }
-
-        .mybtns {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
-
-            margin-top: 20px;
-        }
-
-        .mybtns > button {
-            margin-right: 10px;
-        }
-    </style>
+</head>
     <script>
         $(document).ready(function () {
             listing();
@@ -99,7 +31,7 @@
                 data: {},
                 success: function (response) {
                     let rows = response['list']
-                    for (i=0; i<rows.length; i++){
+                    for (i = 0; i < rows.length; i++) {
                         let title = rows[i]['title']
                         let image = rows[i]['image']
                         let maker = rows[i]['maker']
@@ -109,8 +41,8 @@
                         let num = rows[i]['num']
                         let platform = rows[i]['platform']
                         let price = rows[i]['price']
-                        star_image ='⭐'.repeat(star)
-                        let temp_html = `<div class="col">
+                        star_image = '⭐'.repeat(star)
+                        let temp_html = `<div class="swiper-slide"><div class="col" >
                                             <div class="card h-100">
                                                 <img src="${image}"
                                                      class="card-img-top">
@@ -126,7 +58,8 @@
 
                                                 </div>
                                             </div>
-                                        </div>`
+                                        </div></div>`
+
                         $('#cards-box').append(temp_html)
 
                     }
@@ -134,35 +67,34 @@
             })
         }
 
-          function delete_game(num){
+        function delete_game(num) {
             $.ajax({
                 type: 'POST',
                 url: '/game/delete',
-                data: {num_give:num},
+                data: {num_give: num},
                 success: function (response) {
                     alert(response['msg'])
-                     window.location.reload()
+                    window.location.reload()
                 }
             });
         }
 
-         function change_game(num,star,comment){
+        function change_game(num, star, comment) {
             let change_comment =
-            $.ajax({
-                type: 'POST',
-                url: '/game/change',
-                data: {num_give:num,
-                       comment_give:comment,
-                        star_give:star
-                },
-                success: function (response) {
-                    alert(response['msg'])
-                     window.location.reload()
-                }
-            });
+                $.ajax({
+                    type: 'POST',
+                    url: '/game/change',
+                    data: {
+                        num_give: num,
+                        comment_give: comment,
+                        star_give: star
+                    },
+                    success: function (response) {
+                        alert(response['msg'])
+                        window.location.reload()
+                    }
+                });
         }
-
-
 
 
         function posting() {
@@ -174,13 +106,15 @@
             $.ajax({
                 type: 'POST',
                 url: '/game',
-                data: {url_give: url,
+                data: {
+                    url_give: url,
                     star_give: star,
                     comment_give: comment,
-                    price_give : price},
+                    price_give: price
+                },
                 success: function (response) {
                     alert(response['msg'])
-                     window.location.reload()
+                    window.location.reload()
                 }
             });
         }
@@ -194,52 +128,137 @@
             $('#post-box').hide()
         }
     </script>
-</head>
-
 <body>
-<div class="mytitle">
-    <h1>오늘 게임 뭐하지</h1>
-    <button onclick="open_box()">게임 리뷰하기</button>
-</div>
+
+<!-- 예제 시작 -->
+
+<!-- 이 예제에서는 필요한 js, css 를 링크걸어 사용 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/css/swiper.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/js/swiper.min.js"></script>
+
+<style type="text/css">
+
+    .swiper-container {
+        height: 650px;
+        border: 5px solid black;
+        border-radius: 50px;
+        box-shadow: 0 0 20px #ccc inset;
+    }
+
+    .swiper-slide {
+        text-align: center;
+        display: flex; /* 내용을 중앙정렬 하기위해 flex 사용 */
+        align-items: center; /* 위아래 기준 중앙정렬 */
+        justify-content: center; /* 좌우 기준 중앙정렬 */
+    }
+
+    .swiper-slide img {
+        box-shadow: 0 0 5px #555;
+        max-width: 100%; /* 이미지 최대너비를 제한, 슬라이드에 이미지가 여러개가 보여질때 필요 */
+        /* 이 예제에서 필요해서 설정했습니다. 상황에따라 다를 수 있습니다. */
+    }
+
+    .mypost {
+        width: 95%;
+        max-width: 500px;
+        margin: 20px auto 0px auto;
+        padding: 20px;
+        box-shadow: 0px 0px 3px 0px gray;
+
+        display: none;
+    }
+
+</style>
+
+
+<!-- 클래스명은 변경하면 안 됨 -->
 <div class="mypost" id="post-box">
-    <div class="form-floating mb-3">
-        <input id="url" type="email" class="form-control" placeholder="name@example.com">
-        <label>게임URL</label>
+        <div class="form-floating mb-3">
+            <input id="url" type="email" class="form-control" placeholder="name@example.com">
+            <label>게임URL</label>
+
+        </div>
+
+        <div class="form-floating">
+            <textarea id="game_price" class="form-control" placeholder="Leave a comment here"></textarea>
+            <label for="floatingTextarea2">가격</label>
+        </div>
+
+
+        <div class="input-group mb-3">
+            <label class="input-group-text" for="inputGroupSelect01">별점</label>
+            <select class="form-select" id="star">
+                <option selected>-- 선택하기 --</option>
+                <option value="1">⭐</option>
+                <option value="2">⭐⭐</option>
+                <option value="3">⭐⭐⭐</option>
+                <option value="4">⭐⭐⭐⭐</option>
+                <option value="5">⭐⭐⭐⭐⭐</option>
+            </select>
+        </div>
+        <div class="form-floating">
+            <textarea id="comment" class="form-control" placeholder="Leave a comment here"></textarea>
+            <label for="floatingTextarea2">코멘트</label>
+        </div>
+        <div class="mybtns">
+            <button onclick="posting()" type="button" class="btn btn-dark">기록하기</button>
+            <button onclick="close_box()" type="button" class="btn btn-outline-dark">닫기</button>
+
+        </div>
+    </div>
+
+<div class="swiper-container">
+    <div class="swiper-wrapper" >
+        <div id = "cards-box">
+
+        </div>
+
+        <div class="swiper-slide" style="font-size:10pt;">
+            <button onclick="open_box()">게임 리뷰하기</button>
+        </div>
 
     </div>
 
-    <div class="form-floating">
-        <textarea id="game_price" class="form-control" placeholder="Leave a comment here"></textarea>
-        <label for="floatingTextarea2">가격</label>
-    </div>
+
+    <!-- 네비게이션 -->
+    <div class="swiper-button-next"></div><!-- 다음 버튼 (오른쪽에 있는 버튼) -->
+    <div class="swiper-button-prev"></div><!-- 이전 버튼 -->
+
+    <!-- 페이징 -->
+    <div class="swiper-pagination"></div>
 
 
-    <div class="input-group mb-3">
-        <label class="input-group-text" for="inputGroupSelect01">별점</label>
-        <select class="form-select" id="star">
-            <option selected>-- 선택하기 --</option>
-            <option value="1">⭐</option>
-            <option value="2">⭐⭐</option>
-            <option value="3">⭐⭐⭐</option>
-            <option value="4">⭐⭐⭐⭐</option>
-            <option value="5">⭐⭐⭐⭐⭐</option>
-        </select>
-    </div>
-    <div class="form-floating">
-        <textarea id="comment" class="form-control" placeholder="Leave a comment here"></textarea>
-        <label for="floatingTextarea2">코멘트</label>
-    </div>
-    <div class="mybtns">
-        <button onclick="posting()" type="button" class="btn btn-dark">기록하기</button>
-        <button onclick="close_box()" type="button" class="btn btn-outline-dark">닫기</button>
 
-    </div>
-</div>
-<div class="mycards">
-    <div class="row row-cols-1 row-cols-md-4 g-4" id="cards-box">
+    <script>
 
-    </div>
-</div>
+        new Swiper('.swiper-container', {
+
+
+
+            slidesPerView: 3, // 동시에 보여줄 슬라이드 갯수
+            spaceBetween: 30, // 슬라이드간 간격
+            slidesPerGroup: 3, // 그룹으로 묶을 수, slidesPerView 와 같은 값을 지정하는게 좋음
+            centeredSlides: true,
+
+            // 그룹수가 맞지 않을 경우 빈칸으로 메우기
+            // 3개가 나와야 되는데 1개만 있다면 2개는 빈칸으로 채워서 3개를 만듬
+            loopFillGroupWithBlank: true,
+            loop: true, // 무한 반복
+
+            pagination: { // 페이징
+                el: '.swiper-pagination',
+                clickable: true, // 페이징을 클릭하면 해당 영역으로 이동, 필요시 지정해 줘야 기능 작동
+            },
+            navigation: { // 네비게이션
+                nextEl: '.swiper-button-next', // 다음 버튼 클래스명
+                prevEl: '.swiper-button-prev', // 이번 버튼 클래스명
+            },
+        });
+
+    </script>
+
+    <!-- 예제 종료 -->
+
+
 </body>
-
 </html>
