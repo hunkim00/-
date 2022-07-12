@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>오겜무</title>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+</head>
+
+<body>
+
+<!-- 예제 시작 -->
+
+<!-- 이 예제에서는 필요한 js, css 를 링크걸어 사용 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/css/swiper.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/js/swiper.min.js"></script>
+
+<style type="text/css">
+
+.swiper-container {
+	height:420px;
+	border:5px solid silver;
+	border-radius:7px;
+	box-shadow:0 0 20px #ccc inset;
+}
+.swiper-slide {
+	text-align:center;
+	display:flex; /* 내용을 중앙정렬 하기위해 flex 사용 */
+	align-items:center; /* 위아래 기준 중앙정렬 */
+	justify-content:center; /* 좌우 기준 중앙정렬 */
+}
+.swiper-slide img {
+	box-shadow:0 0 5px #555;
+	max-width:100%; /* 이미지 최대너비를 제한, 슬라이드에 이미지가 여러개가 보여질때 필요 */
+	/* 이 예제에서 필요해서 설정했습니다. 상황에따라 다를 수 있습니다. */
+}
+.search {
+  position: relative;
+  width: 300px;
+  margin-bottom: 20px;
+}
+input {
+  width: 100%;
+  border: 1px solid #bbb;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+}
+img {
+  position: absolute;
+  width: 17px;
+  top: 10px;
+  right: 12px;
+  margin: 0;
+}
+.card-img-top {
+  width: 300px;
+  height: 200px;
+  object-fit: cover;
+  margin: 20px 40px 0px 0px;
+}
+.card-body {
+  margin-top: 250px;
+}
+
+</style>
+
+<div class="search">
+  <input type="text" placeholder="검색어 입력">
+  <img src="https://cdn-icons-png.flaticon.com/512/71/71403.png">
+</div>
+<!-- 클래스명은 변경하면 안 됨 -->
+<div class="swiper-container">
+	<div class="swiper-wrapper">
+      <div class="swiper-slide">
+        <div class="col">
+          <div class="card">
+            <img src="" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">게임 제목</h5>
+              <p class="card-text">게임 코멘트</p>
+              <p>⭐⭐⭐평점</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="swiper-slide">
+        <div class="col">
+          <div class="card">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">게임 제목</h5>
+              <p class="card-text">게임 코멘트</p>
+              <p>⭐⭐⭐평점</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="swiper-slide">
+        <div class="col">
+          <div class="card">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">게임 제목</h5>
+              <p class="card-text">게임 코멘트</p>
+              <p>⭐⭐⭐평점</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="swiper-slide">
+        <div class="col">
+          <div class="card">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">게임 제목</h5>
+              <p class="card-text">게임 코멘트</p>
+              <p>⭐⭐⭐평점</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="swiper-slide">
+        <div class="col">
+          <div class="card">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">게임 제목</h5>
+              <p class="card-text">게임 코멘트</p>
+              <p>⭐⭐⭐평점</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="swiper-slide">
+        <div class="col">
+          <div class="card">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">게임 제목</h5>
+              <p class="card-text">게임 코멘트</p>
+              <p>⭐⭐⭐평점</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="swiper-slide">
+        <div class="col">
+          <div class="card">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">게임 제목</h5>
+              <p class="card-text">게임 코멘트</p>
+              <p>⭐⭐⭐평점</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="swiper-slide">
+        <div class="col">
+          <div class="card">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">게임 제목</h5>
+              <p class="card-text">게임 코멘트</p>
+              <p>⭐⭐⭐평점</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="swiper-slide">
+        <div class="col">
+          <div class="card">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">게임 제목</h5>
+              <p class="card-text">게임 코멘트</p>
+              <p>⭐⭐⭐평점</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="swiper-slide">
+        <div class="col">
+          <div class="card">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">게임 제목</h5>
+              <p class="card-text">게임 코멘트</p>
+              <p>⭐⭐⭐평점</p>
+            </div>
+          </div>
+        </div>
+      </div>
+		<div class="swiper-slide" style="font-size:50pt;">
+          <button type="button" class="btn btn-outline-dark">리뷰 남기기</button></div>
+	</div>
+
+	<!-- 네비게이션 -->
+	<div class="swiper-button-next"></div><!-- 다음 버튼 (오른쪽에 있는 버튼) -->
+	<div class="swiper-button-prev"></div><!-- 이전 버튼 -->
+
+	<!-- 페이징 -->
+	<div class="swiper-pagination"></div>
+</div>
+<div class="game-logo">
+  <img src="https://cdn.icon-icons.com/icons2/2066/PNG/512/game_icon_125273.png", width="200" height="50">
+</div>
+
+<script>
+
+new Swiper('.swiper-container', {
+
+	slidesPerView : 3, // 동시에 보여줄 슬라이드 갯수
+	spaceBetween : 30, // 슬라이드간 간격
+	slidesPerGroup : 3, // 그룹으로 묶을 수, slidesPerView 와 같은 값을 지정하는게 좋음
+
+	// 그룹수가 맞지 않을 경우 빈칸으로 메우기
+	// 3개가 나와야 되는데 1개만 있다면 2개는 빈칸으로 채워서 3개를 만듬
+	loopFillGroupWithBlank : true,
+
+	loop : true, // 무한 반복
+
+	pagination : { // 페이징
+		el : '.swiper-pagination',
+		clickable : true, // 페이징을 클릭하면 해당 영역으로 이동, 필요시 지정해 줘야 기능 작동
+	},
+	navigation : { // 네비게이션
+		nextEl : '.swiper-button-next', // 다음 버튼 클래스명
+		prevEl : '.swiper-button-prev', // 이번 버튼 클래스명
+	},
+});
+
+$(document).ready(function () {
+            listing();
+        });
+
+        function listing() {
+            $.ajax({
+                type: "GET",
+                url: "https://opencritic.com/",
+                data: {},
+                success: function (response) {
+                    let rows = response['games']
+                    for(let i = 0; i < rows.length; i ++) {
+                        let title = rows[i]['title']
+                        let desc = rows[i]['desc']
+                        let image = rows[i]['image']
+                        let star = rows[i]['star']
+                        let comment = rows[i]['comment']
+
+                        let star_image = '⭐'.repeat(star)
+
+                        let temp_html = `<div class="col">
+                                            <div class="card">
+                                                <img src="${image}" class="card-img-top" alt="...">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">${title}</h5>
+                                                    <p class="card-text">${desc}</p>
+                                                    <p>${star_image}</p>
+                                                    <p class="mycomment">${comment}</p>
+                                                </div>
+                                            </div>
+                                        </div>`
+                        $('#cards-box').append(temp_html)
+
+
+                    }
+                }
+            })
+        }
+
+</script>
+
+<!-- 예제 종료 -->
+
+
+
+</body>
+</html>
