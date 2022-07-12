@@ -119,11 +119,18 @@ def api_check_id():
 def api_signup():
     id_receive = request.form['user_id']
     pw_receive = request.form['user_pw']
+    name_receive = request.form['user_name']
     birthday_receive = request.form['user_birthday']
     # hashlib 함수로 비밀번호 암호화
     pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
 
-    db.user.insert_one({'user_id': id_receive, 'user_pw': pw_hash, 'user_birthday': birthday_receive})
+    db.user.insert_one({
+        'user_id': id_receive,
+        'user_pw': pw_hash,
+        'user_name': name_receive,
+        'user_comment': '',
+        'user_birthday': birthday_receive
+    })
 
     return jsonify({'result': 'success'})
 
