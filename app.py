@@ -49,9 +49,10 @@ def login():
 def register():
     return render_template('signup.html')
 
+
 @app.route('/reviewpage')
 def review():
-    return  render_template('reviewpage.html')
+    return render_template('reviewpage.html')
 
 
 # 마이페이지 화면
@@ -182,9 +183,9 @@ def game_post():
                14:1000].strip()
 
     num_list = list(db.nums.find({}, {'_id': False}))
-    count =len(num_list)+1
+    count = len(num_list) + 1
     doc_num = {
-        'num' :count
+        'num': count
     }
     db.nums.insert_one(doc_num)
 
