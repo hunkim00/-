@@ -17,117 +17,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
 
 
-
 </head>
-    <script>
-        $(document).ready(function () {
-            listing();
-        });
 
-        function listing() {
-            $.ajax({
-                type: 'GET',
-                url: '/game',
-                data: {},
-                success: function (response) {
-                    let rows = response['list']
-                    for (i = 0; i < rows.length; i++) {
-                        let title = rows[i]['title']
-                        let image = rows[i]['image']
-                        let maker = rows[i]['maker']
-                        let star = rows[i]['star']
-                        let comment = rows[i]['comment']
-                        let date = rows[i]['date']
-                        let num = rows[i]['num']
-                        let platform = rows[i]['platform']
-                        let price = rows[i]['price']
-                        star_image = '⭐'.repeat(star)
-                        let temp_html = `<div class="swiper-slide"><div class="col" >
-                                            <div class="card h-100">
-                                                <img src="${image}"
-                                                     class="card-img-top">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">${title}</h5>
-                                                    <p class="card-text">출시일:${date}</p>
-                                                    <p class="card-text">가격 :${price}</p>
-                                                    <p class="card-text">${maker}</p>
-                                                     <p class="card-text">${platform}</p>
-                                                    <p>${star_image}</p>
-                                                    <p class="mycomment">${comment}</p>
-                                                    <button onclick="delete_game(${num})" type="button" class="btn btn-dark" > 기록삭제하기 </button>
-
-                                                </div>
-                                            </div>
-                                        </div></div>`
-
-                        $('#cards-box').append(temp_html)
-
-                    }
-                }
-            })
-        }
-
-        function delete_game(num) {
-            $.ajax({
-                type: 'POST',
-                url: '/game/delete',
-                data: {num_give: num},
-                success: function (response) {
-                    alert(response['msg'])
-                    window.location.reload()
-                }
-            });
-        }
-
-        function change_game(num, star, comment) {
-            let change_comment =
-                $.ajax({
-                    type: 'POST',
-                    url: '/game/change',
-                    data: {
-                        num_give: num,
-                        comment_give: comment,
-                        star_give: star
-                    },
-                    success: function (response) {
-                        alert(response['msg'])
-                        window.location.reload()
-                    }
-                });
-        }
-
-
-        function posting() {
-            let url = $('#url').val()
-            let star = $('#star').val()
-            let comment = $('#comment').val()
-            let price = $('#game_price').val()
-
-            $.ajax({
-                type: 'POST',
-                url: '/game',
-                data: {
-                    url_give: url,
-                    star_give: star,
-                    comment_give: comment,
-                    price_give: price
-                },
-                success: function (response) {
-                    alert(response['msg'])
-                    window.location.reload()
-                }
-            });
-        }
-
-
-        function open_box() {
-            $('#post-box').show()
-        }
-
-        function close_box() {
-            $('#post-box').hide()
-        }
-    </script>
 <body>
 
 <!-- 예제 시작 -->
@@ -209,13 +100,6 @@
 
 <div class="swiper-container">
     <div class="swiper-wrapper" >
-        <div id = "cards-box">
-
-        </div>
-
-        <div class="swiper-slide" style="font-size:10pt;">
-            <button onclick="open_box()">게임 리뷰하기</button>
-        </div>
 
     </div>
 
@@ -227,37 +111,152 @@
     <!-- 페이징 -->
     <div class="swiper-pagination"></div>
 
+</div>
+
+<script>
+
+    const swiper = new Swiper('.swiper-container', {
 
 
-    <script>
+        slidesPerView: 3, // 동시에 보여줄 슬라이드 갯수
+        spaceBetween: 30, // 슬라이드간 간격
+        slidesPerGroup: 3, // 그룹으로 묶을 수, slidesPerView 와 같은 값을 지정하는게 좋음
+        centeredSlides: false,
 
-        new Swiper('.swiper-container', {
+        // 그룹수가 맞지 않을 경우 빈칸으로 메우기
+        // 3개가 나와야 되는데 1개만 있다면 2개는 빈칸으로 채워서 3개를 만듬
+        loopFillGroupWithBlank: true,
+        loop: true, // 무한 반복
+
+        pagination: { // 페이징
+            el: '.swiper-pagination',
+            clickable: true, // 페이징을 클릭하면 해당 영역으로 이동, 필요시 지정해 줘야 기능 작동
+        },
+        navigation: { // 네비게이션
+            nextEl: '.swiper-button-next', // 다음 버튼 클래스명
+            prevEl: '.swiper-button-prev', // 이번 버튼 클래스명
+        },
+    });
+
+    $(document).ready(function () {
+        listing();
+    });
+
+    function listing() {
+        $.ajax({
+            type: 'GET',
+            url: '/game',
+            data: {},
+            success: function (response) {
+                swiper.removeAllSlides();
+
+                let rows = response['list']
+                for (i = 0; i < rows.length; i++) {
+                    let title = rows[i]['title']
+                    let image = rows[i]['image']
+                    let maker = rows[i]['maker']
+                    let star = rows[i]['star']
+                    let comment = rows[i]['comment']
+                    let date = rows[i]['date']
+                    let num = rows[i]['num']
+                    let platform = rows[i]['platform']
+                    let price = rows[i]['price']
+                    star_image = '⭐'.repeat(star)
+                    let temp_html = `<div class="swiper-slide">
+                                            <div class="card h-100">
+                                                <img src="${image}"
+                                                     class="card-img-top">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">${title}</h5>
+                                                    <p class="card-text">출시일:${date}</p>
+                                                    <p class="card-text">가격 :${price}</p>
+                                                    <p class="card-text">${maker}</p>
+                                                     <p class="card-text">${platform}</p>
+                                                    <p>${star_image}</p>
+                                                    <p class="mycomment">${comment}</p>
+                                                    <button onclick="delete_game(${num})" type="button" class="btn btn-dark" > 기록삭제하기 </button>
+
+                                                </div>
+                                            </div>
+                                        </div>`
+
+                    swiper.appendSlide(temp_html);
 
 
-
-            slidesPerView: 3, // 동시에 보여줄 슬라이드 갯수
-            spaceBetween: 30, // 슬라이드간 간격
-            slidesPerGroup: 3, // 그룹으로 묶을 수, slidesPerView 와 같은 값을 지정하는게 좋음
-            centeredSlides: true,
-
-            // 그룹수가 맞지 않을 경우 빈칸으로 메우기
-            // 3개가 나와야 되는데 1개만 있다면 2개는 빈칸으로 채워서 3개를 만듬
-            loopFillGroupWithBlank: true,
-            loop: true, // 무한 반복
-
-            pagination: { // 페이징
-                el: '.swiper-pagination',
-                clickable: true, // 페이징을 클릭하면 해당 영역으로 이동, 필요시 지정해 줘야 기능 작동
+                }
+                let review = `<div class="swiper-slide" style="font-size:10pt;">
+                                <button onclick="open_box()">게임 리뷰하기</button>
+                            </div>`
+                swiper.appendSlide(review);
+                swiper.update();
             },
-            navigation: { // 네비게이션
-                nextEl: '.swiper-button-next', // 다음 버튼 클래스명
-                prevEl: '.swiper-button-prev', // 이번 버튼 클래스명
-            },
-        });
 
-    </script>
+        })
+    }
 
-    <!-- 예제 종료 -->
+    function delete_game(num) {
+            $.ajax({
+                type: 'POST',
+                url: '/game/delete',
+                data: {num_give: num},
+                success: function (response) {
+                    alert(response['msg'])
+                    window.location.reload()
+                }
+            });
+        }
+
+        function change_game(num, star, comment) {
+            let change_comment =
+                $.ajax({
+                    type: 'POST',
+                    url: '/game/change',
+                    data: {
+                        num_give: num,
+                        comment_give: comment,
+                        star_give: star
+                    },
+                    success: function (response) {
+                        alert(response['msg'])
+                        window.location.reload()
+                    }
+                });
+        }
+
+
+        function posting() {
+            let url = $('#url').val()
+            let star = $('#star').val()
+            let comment = $('#comment').val()
+            let price = $('#game_price').val()
+
+            $.ajax({
+                type: 'POST',
+                url: '/game',
+                data: {
+                    url_give: url,
+                    star_give: star,
+                    comment_give: comment,
+                    price_give: price
+                },
+                success: function (response) {
+                    alert(response['msg'])
+                    window.location.reload()
+                }
+            });
+        }
+
+
+        function open_box() {
+            $('#post-box').show()
+        }
+
+        function close_box() {
+            $('#post-box').hide()
+        }
+
+</script>
+
 
 
 </body>
