@@ -87,18 +87,17 @@ def api_login():
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
 
 
-# 로그인 api
+# 아이디 중복 확인 api
 @app.route("/api/checkid", methods=["POST"])
 def api_check_id():
     id_receive = request.form['user_id']
-    user = db.user.find_one({'user_id': id_receive}, {'_id': False})
+    exist = bool(db.user.find_one({'user_id': id_receive}, {'_id': False}))
 
     # 사용자가 존재한다면
-    if user is not None:
+    if exist:
         return jsonify({'result': 'fail', 'msg': '중복된 아이디 입니다.'})
     else:
         return jsonify({'result': 'success', 'msg': '사용 가능한 아이디 입니다.'})
-
 
 
 # 회원가입 api
