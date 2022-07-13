@@ -39,8 +39,6 @@
                         // 로그인시 토큰 받아오기
                         // mytoken 키 값으로 쿠키에 저장
                         $.cookie('mytoken', response['token']);
-
-                        alert('로그인 완료!')
                         window.location.href = '/'
                     } else {
                         // 로그인 실패시 에러 메시지
@@ -72,9 +70,9 @@
                 <span class="icon is-small is-left"><i class="fa fa-lock"></i></span>
             </div>
         </div>
-        <button class="button is-primary" onclick="login()" style="width:100%">로그인</button>
+        <button class="button is-dark" onclick="login()" style="width:100%">로그인</button>
         <hr>
-        <button class="button is-primary is-outlined" onclick="move_signup()" style="width:100%">회원가입</button>
+        <button class="button is-danger" onclick="move_signup()" style="width:100%">회원가입</button>
 
     </div>
 </div>

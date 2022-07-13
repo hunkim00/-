@@ -69,7 +69,6 @@
         // 로그아웃
         function logout() {
             $.removeCookie('mytoken', {path: '/'});
-            alert('로그아웃!')
             window.location.href = "/login"
         }
 
@@ -100,7 +99,7 @@
     </script>
 
 </head>
-<body class="has-background-primary-light" style="height:auto">
+<body class="has-background-grey" style="height:auto">
 <section class="hero is-white">
     <div class="hero-body" style="padding-bottom:1rem;margin:auto;min-width: 400px">
         <article class="media">
@@ -120,13 +119,13 @@
         </article>
         {% if status %}
             <nav id="btns-me" class="level is-mobile" style="margin-top:2rem">
-                <a class="button level-item has-text-centered is-primary" aria-label="edit"
+                <a class="button level-item has-text-centered is-dark" aria-label="edit"
                    onclick='$("#modal-edit").addClass("is-active")'>
                     프로필 수정&nbsp;&nbsp;&nbsp;<span class="icon is-small"><i class="fa fa-pencil"
                                                                            aria-hidden="true"></i></span>
                 </a>
 
-                <a class="button level-item has-text-centered is-primary is-outlined" aria-label="logout"
+                <a class="button level-item has-text-centered is-danger" aria-label="logout"
                    onclick="logout()">
                     로그아웃&nbsp;&nbsp;&nbsp;<span class="icon is-small"><i class="fa fa-sign-out"
                                                                          aria-hidden="true"></i></span>
@@ -160,10 +159,10 @@
                                     </div>
                                     <div class="level-right">
                                         <div class="level-item">
-                                            <a class="button is-primary" onclick="update_user()">업데이트</a>
+                                            <a class="button is-dark" onclick="update_user()">업데이트</a>
                                         </div>
                                         <div class="level-item">
-                                            <a class="button is-primary is-outlined"
+                                            <a class="button is-danger"
                                                onclick='$("#modal-edit").removeClass("is-active")'>취소</a>
                                         </div>
                                     </div>
@@ -180,7 +179,7 @@
 </section>
 <section class="section">
     <div class="container">
-        <p class="is-size-3 has-text-weight-bold mb-5">작성한 리뷰</p>
+        <p class="is-size-3 has-text-weight-bold has-text-white mb-5">작성한 리뷰</p>
         <div id="review-box" class="columns is-multiline">
 
         </div>
