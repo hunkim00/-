@@ -21,15 +21,59 @@
 
     <script>
         $(document).ready(function () {
-            get_posts("{{ user_info.user_id }}")
+            my_reviews()
         })
 
+        // 내가 쓴 리뷰 목록
+        function my_reviews() {
+            $("#review-box").empty()
+            $.ajax({
+                type: "GET",
+                url: "/api/my-reviews/{{ user_info.user_id }}",
+                data: {},
+                success: function (response) {
+                    if (response["result"] == "success") {
+                        let reviews = response["reviews"]
+                        for (let i = 0; i < reviews.length; i++) {
+                            let review = reviews[i]
+                            star_image = '⭐'.repeat(review.star)
+                            let html_temp = `<div class="column is-one-quarter">
+                                                <div class="card" id="${review["num"]}">
+                                                  <div class="card-image">
+                                                    <figure class="image is-4by3">
+                                                      <img src="${review['image']}" alt="image">
+                                                    </figure>
+                                                  </div>
+                                                  <div class="card-content">
+                                                    <div class="media">
+                                                      <div class="media-content">
+                                                        <p class="title is-4">${review['title']}</p>
+                                                        <p class="subtitle is-6">${review['maker']}</p>
+                                                      </div>
+                                                    </div>
+                                                    <div class="content">
+                                                      <p>${star_image}</p>
+                                                      <br>
+                                                      ${review['comment']}
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                               </div>`
+                            $("#review-box").append(html_temp)
+                        }
+                    }
+                }
+            })
+        }
+
+        // 로그아웃
         function logout() {
             $.removeCookie('mytoken', {path: '/'});
             alert('로그아웃!')
             window.location.href = "/login"
         }
 
+        // 사용자 업데이트
         function update_user() {
             let name = $('#input-name').val()
             let comment = $("#textarea-about").val()
@@ -56,7 +100,7 @@
     </script>
 
 </head>
-<body class="has-background-primary-light" style="height:100vh">
+<body class="has-background-primary-light" style="height:auto">
 <section class="hero is-white">
     <div class="hero-body" style="padding-bottom:1rem;margin:auto;min-width: 400px">
         <article class="media">
@@ -135,8 +179,11 @@
     </div>
 </section>
 <section class="section">
-    <div id="post-box" class="container">
+    <div class="container">
+        <p class="is-size-3 has-text-weight-bold mb-5">작성한 리뷰</p>
+        <div id="review-box" class="columns is-multiline">
 
+        </div>
     </div>
 </section>
 
