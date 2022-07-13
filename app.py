@@ -158,6 +158,7 @@ def api_update_user():
 @app.route('/api/my-reviews/<user_id>', methods=['GET'])
 def api_my_reviews(user_id):
     reviews = list(db.games.find({'user_id': user_id}, {'_id': False}))
+    print(reviews)
     return jsonify({'result': 'success', 'reviews': reviews})
 
 

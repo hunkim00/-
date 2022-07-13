@@ -56,6 +56,11 @@
                                                       <br>
                                                       ${review['comment']}
                                                     </div>
+                                                    {% if status %}
+                                                        <button onclick="delete_game(${review["num"]})" class="button is-danger" >
+                                                            기록삭제하기
+                                                        </button>
+                                                    {% endif %}
                                                   </div>
                                                 </div>
                                                </div>`
@@ -93,6 +98,19 @@
                         alert(response["msg"])
                         window.location.reload()
                     }
+                }
+            });
+        }
+
+        // 삭제하기
+        function delete_game(num) {
+            $.ajax({
+                type: 'POST',
+                url: '/game/delete',
+                data: {num_give: num},
+                success: function (response) {
+                    alert(response['msg'])
+                    window.location.reload()
                 }
             });
         }
