@@ -27,7 +27,7 @@ def home():
         # 서버에 지정된 비밀 문자열로 토큰을 해석한다.
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         # 해석된 토큰값에서 id를 가져온다.
-        user_info = db.user.find_one({"user_id": payload['user_id']}), {'id': False, 'user_name': False}
+        user_info = db.user.find_one({"user_id": payload['user_id']}, {'_id': False, 'user_pw': False})
         return render_template('index.html', user_info=user_info)
     # 토큰 시간이 만료되었다면
     except jwt.ExpiredSignatureError:
@@ -221,7 +221,7 @@ def game_post():
 
         return jsonify({'msg': '작성완료!'})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-        return redirect(url_for("home"))
+        return jsonify({'msg': '로그인 하지 않은 사용자는 리뷰를 작성할 수 없습니다.'})
 
 
 @app.route("/game", methods=["GET"])
