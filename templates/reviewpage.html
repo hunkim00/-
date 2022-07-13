@@ -2,12 +2,17 @@
 <html lang="ko">
 
 <head>
-    <!-- Webpage Title -->
-    <title>오겜무 리뷰작성 페이지</title>
-
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- Webpage Title -->
+    <title>오겜무 리뷰작성 페이지</title>
+
+    <!-- Bulma CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -21,6 +26,7 @@
             crossorigin="anonymous"></script>
 
     <link href="https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap" rel="stylesheet">
+    {#    <link rel="stylesheet" type="text/css" href="reviewpage.css">#}
 
     <script>
         $(document).ready(function () {
@@ -34,7 +40,7 @@
                 data: {},
                 success: function (response) {
                     let rows = response['list']
-                    for (i=0; i<rows.length; i++){
+                    for (i = 0; i < rows.length; i++) {
                         let title = rows[i]['title']
                         let image = rows[i]['image']
                         let maker = rows[i]['maker']
@@ -44,7 +50,7 @@
                         let num = rows[i]['num']
                         let platform = rows[i]['platform']
                         let price = rows[i]['price']
-                        star_image ='⭐'.repeat(star)
+                        star_image = '⭐'.repeat(star)
                         let temp_html = `<div class="col">
                                             <div class="card h-100">
                                                 <img src="${image}"
@@ -68,53 +74,51 @@
             })
         }
 
-          function delete_game(num){
+        function delete_game(num) {
             $.ajax({
                 type: 'POST',
                 url: '/game/delete',
-                data: {num_give:num},
+                data: {num_give: num},
                 success: function (response) {
                     alert(response['msg'])
-                     window.location.reload()
+                    window.location.reload()
                 }
             });
         }
 
-         function change_game(num,star,comment){
+        function change_game(num, star, comment) {
             let change_comment =
-            $.ajax({
-                type: 'POST',
-                url: '/game/change',
-                data: {num_give:num,
-                       comment_give:comment,
-                        star_give:star
-                },
-                success: function (response) {
-                    alert(response['msg'])
-                     window.location.reload()
-                }
-            });
+                $.ajax({
+                    type: 'POST',
+                    url: '/game/change',
+                    data: {
+                        num_give: num,
+                        comment_give: comment,
+                        star_give: star
+                    },
+                    success: function (response) {
+                        alert(response['msg'])
+                        window.location.reload()
+                    }
+                });
         }
-
-
 
 
         function posting() {
             let url = $('#url').val()
             let star = $('#star').val()
             let comment = $('#comment').val()
-            let price = $('#game_price').val()
-
             $.ajax({
                 type: 'POST',
                 url: '/game',
-                data: {url_give: url,
+                data: {
+                    url_give: url,
                     star_give: star,
                     comment_give: comment,
-                    price_give : price},
+                },
                 success: function (response) {
                     alert(response['msg'])
-                     window.location.reload()
+                    window.location.reload()
                 }
             });
         }
@@ -130,24 +134,40 @@
     </script>
 
     <style type="text/css">
+
+        {#body {#}
+        {#    background-image: url("https://i.pinimg.com/originals/4c/6e/96/4c6e96f0519154761881e18be00a8f85.png");#}
+        {#!important;#}
+        {#    background-repeat: no-repeat;#}
+        {#    background-size: cover;#}
+        {#    background-position: center;#}
+        {#    margin: 0px;#}
+        {##}
+        #}#}
+
         * {
             font-family: "Do Hyeon", sans-serif;
         }
 
-        h1,
-        h5 {
+        h1, h5 {
             display: inline;
         }
 
+
         .info {
-            width: 100%;
-            height: 250px;
+            width: auto;
+            padding: 30px;
+            padding-left: 20%;
+            padding-right: 20%;
+            height: 100vh;
 
-            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://previews.123rf.com/images/magurok/magurok1310/magurok131000077/22712586-%EB%B2%A1%ED%84%B0-%EA%B2%8C%EC%9E%84-%ED%8C%A8%EB%93%9C-%EC%95%84%EC%9D%B4%EC%BD%98.jpg');
-            background-position: center;
+            background-image: url("https://i.pinimg.com/originals/4c/6e/96/4c6e96f0519154761881e18be00a8f85.png");
+        !important;
+            background-repeat: no-repeat;
             background-size: cover;
+            background-position: center;
+            margin: 0px;
 
-            color: white;
 
             display: flex;
             flex-direction: column;
@@ -156,78 +176,88 @@
         }
 
 
-        .review {
-            text-align: center;
-            margin-right: 50px;
-            margin-bottom: auto;
-        }
+        {#.review {#}
+        {#    text-align: center;#}
+        {#    margin-right: 50px;#}
+        {#    margin-bottom: auto;#}
 
         .btn {
-            width: 300px;
+            width: 100px;
             margin: auto;
+            display: block;
         }
+
+        p {
+            margin: 0 auto; /* Added */
+            float: none; /* Added */
+            margin-bottom: 10px; /* Added */
+
+        }
+
+        {#.card-body{#}
+        {#    max-width: auto;#}
+        {#    position: center;#}
+        {}
+        #}#}
+
+
     </style>
+
+
 </head>
 
 <body>
-<div class="container">
+<div>
     <div class="info">
         <div style=" float: left;" id="outer-div">
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">게임 URL</span>
+            <div class="col">
+                <div class="card" style="width: 50rem;">
+                    <div class="card-body">
+                        <h4 class="card bg-info text-dark"><p><b>
+                            게임리뷰 작성</b></p>
+                            <p>(Game Review)</p>
+                        </h4>
+                        <br>
+                        <p class="card-text">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">게임 URL</span>
+                            </div>
+                            <input type="text" class="form-control" id="url" placeholder="URL">
+                        </div>
+                        <br>
+                        <div class="input-group mb-3">
+                            <label class="input-group-text">평가점수</label>
+                            <select class="form-select" id="star">
+                                <option selected>-- 선택하기 --</option>
+                                <option value="1">⭐</option>
+                                <option value="2">⭐⭐</option>
+                                <option value="3">⭐⭐⭐</option>
+                                <option value="4">⭐⭐⭐⭐</option>
+                                <option value="5">⭐⭐⭐⭐⭐</option>
+                            </select>
+                        </div>
+                        <br>
+                        <div style="float: right;">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">리뷰</span>
+                                </div>
+                                <textarea class="form-control" id="comment"
+                                          cols="300"
+                                          rows="10" placeholder="게임리뷰 작성">
+                                </textarea>
+                            </div>
+                            <div class="btn">
+                                <button onclick="posting()" type="button" class="btn btn-dark">기록하기</button>
+                            </div>
+                            </p>
+                        </div>
+                    </div>
                 </div>
-                <input type="text" class="form-control" id="url" placeholder="URL">
-            </div>
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">게임이름</span>
-                </div>
-                <input type="text" class="form-control" id="title" placeholder="이름">
-            </div>
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">구입가격</span>
-                </div>
-                <input type="text" class="form-control" id="price" placeholder="가격">
-            </div>
-            <div class="input-group mb-3">
-                <label class="input-group-text">평가점수</label>
-                <select class="form-select" id="star">
-                    <option selected>-- 선택하기 --</option>
-                    <option value="1">1점</option>
-                    <option value="2">2점</option>
-                    <option value="3">3점</option>
-                    <option value="4">4점</option>
-                    <option value="5">5점</option>
-                    <option value="6">6점</option>
-                    <option value="7">7점</option>
-                    <option value="8">8점</option>
-                    <option value="9">9점</option>
-                    <option value="10">10점</option>
-
-                </select>
             </div>
         </div>
     </div>
-    <div style="float: right;">
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text">리뷰</span>
-            </div>
-            <textarea class="form-control" id="comment"
-                      cols="1000"
-                      rows="30" placeholder="조작감, 최적화, 게임리뷰 등등"></textarea>
-        </div>
-        <div class="review">
-             <button onclick="posting()" type="button" class="btn btn-dark">기록하기</button>
-        </div>
-    </div>
-</div>
-</tbody>
-</table>
-</div>
 </div>
 </body>
-
 </html>
