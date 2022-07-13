@@ -50,11 +50,6 @@ def register():
     return render_template('signup.html')
 
 
-@app.route('/reviewpage')
-def review():
-    return render_template('reviewpage.html')
-
-
 # 마이페이지 화면
 @app.route('/mypage/<user_id>')
 def mypage(user_id):
@@ -155,6 +150,13 @@ def api_update_user():
         return redirect(url_for("home"))
 
 
+# 나의 리뷰 불러오기 api
+@app.route('/api/my-reviews/<user_id>', methods=['GET'])
+def api_my_reviews(user_id):
+    reviews = list(db.games.find({'user_id': user_id}, {'_id': False}))
+    return jsonify({'result': 'success', 'reviews': reviews})
+
+
 @app.route("/game", methods=["POST"])
 def game_post():
     url_receive = request.form['url_give']
@@ -198,7 +200,7 @@ def game_post():
            'platform': platform,
            'price': price_receive,
            'num': count,
-           'url': url_receive
+           'url': url_receive,
            }
     db.games.insert_one(doc)
 
