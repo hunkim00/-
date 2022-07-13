@@ -99,11 +99,17 @@
     </script>
 
 </head>
-<body class="has-background-grey" style="height:auto">
+<body class="has-background-grey has-navbar-fixed-top" style="height:auto">
+<nav class="navbar is-fixed-top is-white" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="/">
+            <strong class="is-dark">OGAMEMU</strong>
+        </a>
+    </div>
+</nav>
 <section class="hero is-white">
     <div class="hero-body" style="padding-bottom:1rem;margin:auto;min-width: 400px">
         <article class="media">
-
             <figure class="media-left image is-96x96" style="align-self: center">
                 <img class="is-rounded" src="{{ url_for('static', filename='user_default.png') }}">
             </figure>
@@ -174,6 +180,8 @@
                 <button class="modal-close is-large" aria-label="close"
                         onclick='$("#modal-edit").removeClass("is-active")'></button>
             </div>
+        {% else %}
+            <div class="mb-5"></div>
         {% endif %}
     </div>
 </section>
