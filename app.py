@@ -27,7 +27,7 @@ def home():
         # 서버에 지정된 비밀 문자열로 토큰을 해석한다.
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         # 해석된 토큰값에서 id를 가져온다.
-        user_info = db.user.find_one({"user_id": payload['user_id']}),{'id':False, 'user_name':False}
+        user_info = db.user.find_one({"user_id": payload['user_id']}), {'id': False, 'user_name': False}
         return render_template('index.html', user_info=user_info)
     # 토큰 시간이 만료되었다면
     except jwt.ExpiredSignatureError:
@@ -51,7 +51,7 @@ def register():
 
 @app.route('/reviewpage')
 def review():
-    return  render_template('reviewpage.html')
+    return render_template('reviewpage.html')
 
 
 # 마이페이지 화면
@@ -169,7 +169,6 @@ def game_post():
     # 가격 입력 삭제
     # price_receive = request.form['price_give']
 
-
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
     data = requests.get(url_receive, headers=headers)
@@ -189,32 +188,40 @@ def game_post():
     platform = soup.select_one(
         'body > app-root > div > app-game-overview > app-page-container-right-nav > div > div.d-flex.mb-4 > div.flex-grow-1 > div.card.mt-4 > div > div > div.col-lg-7 > div.platforms').text[
                14:1000].strip()
-    critic = soup.select_one('body > app-root > div > app-game-overview > app-page-container-right-nav > div > div.d-flex.mb-4 > div.flex-grow-1 > div.card.mt-4 > div > div > div.col-lg-7 > div.mt-4 > app-game-scores-display > div > div > div:nth-child(2) > app-score-orb > div > div.inner-orb').text.strip()
-
+    critic = soup.select_one(
+        'body > app-root > div > app-game-overview > app-page-container-right-nav > div > div.d-flex.mb-4 > div.flex-grow-1 > div.card.mt-4 > div > div > div.col-lg-7 > div.mt-4 > app-game-scores-display > div > div > div:nth-child(2) > app-score-orb > div > div.inner-orb').text.strip()
 
     num_list = list(db.nums.find({}, {'_id': False}))
-    count =len(num_list)+1
+    count = len(num_list) + 1
     doc_num = {
-        'num' :count
+        'num': count
     }
     db.nums.insert_one(doc_num)
 
-    doc = {'title': title,
-           'image': image,
-           'maker': maker,
-           'star': star_receive,
-           'comment': comment_receive,
-           'date': date,
-           'platform': platform,
-           #삭제 기존 price 정보에 평가점수가 입력됨.
-           # 'price': price_receive,
-           'price': critic,
-           'num': count,
-           'url': url_receive
-           }
-    db.games.insert_one(doc)
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_id = payload["user_id"]
 
-    return jsonify({'msg': '작성완료!'})
+        doc = {'title': title,
+               'image': image,
+               'maker': maker,
+               'star': star_receive,
+               'comment': comment_receive,
+               'date': date,
+               'platform': platform,
+               # 삭제 기존 price 정보에 평가점수가 입력됨.
+               # 'price': price_receive,
+               'price': critic,
+               'num': count,
+               'url': url_receive,
+               'user_id': user_id
+               }
+        db.games.insert_one(doc)
+
+        return jsonify({'msg': '작성완료!'})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
 
 
 @app.route("/game", methods=["GET"])
