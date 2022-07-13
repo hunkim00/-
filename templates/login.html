@@ -25,9 +25,38 @@
     <!-- ogamemu CSS -->
     <link href="{{ url_for('static', filename='ogamemu.css') }}" rel="stylesheet">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gaegu&family=Gugi&display=swap" rel="stylesheet">
+
+
     <!-- JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+
+    <style>
+      video {width: 100%; }
+      .container { position: absolute;
+          margin-top: 10%;
+          width: 100%;
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+      }
+      body{
+          background-color: white;
+      }
+      .title{
+          font-family: 'Gaegu', cursive;
+          font-size: 4rem;
+
+      }
+      .subtitle{
+          font-family: 'Gaegu', cursive;
+          font-size: 2rem;
+      }
+    </style>
 
     <script>
         function login() {
@@ -54,34 +83,42 @@
         }
     </script>
 
+
 </head>
 <body>
-<section class="hero is-white">
-    <div class="hero-body has-text-centered">
-        <h1 class="title">OGAMEMU</h1>
-        <h3 class="subtitle">오늘 게임 뭐 하지</h3>
-    </div>
-</section>
-<section class="section has-text-centered mt-6">
-    <div class="container">
-        <div class="has-background-white p-5" style="width:400px; margin:auto">
-            <div class="field">
-                <div class="control has-icons-left">
-                    <input class="input" type="text" id="userid" placeholder="아이디">
-                    <span class="icon is-small is-left"><i class="fa fa-user"></i></span>
-                </div>
+    <section class="hero is-white">
+{#        <div class="hero-body has-text-centered">#}
+{#             <h1 class="title">OGAMEMU</h1>#}
+{#            <h3 class="subtitle">🎮오늘 게임 뭐 하지</h3>#}
+{#        </div>#}
+        <video muted autoplay loop>
+            <source src="static/Video Games - 89894.mp4" type="video/mp4">
+            <strong>Your browser does not support the video tag.</strong>
+        </video>
+
+        <div class="container">
+            <div class="has-background-white p-5" style="width:400px; margin:auto">
+                 <div class="hero-body has-text-centered">
+                <h1 class="title">OGAMEMU</h1>
+                <h3 class="subtitle">🎮오늘 게임 뭐 하지</h3>
             </div>
-            <div class="field">
-                <div class="control has-icons-left">
-                    <input type="password" class="input" id="userpw" placeholder="비밀번호">
-                    <span class="icon is-small is-left"><i class="fa fa-lock"></i></span>
+                <div class="field">
+                    <div class="control has-icons-left">
+                        <input class="input" type="text" id="userid" placeholder="아이디">
+                        <span class="icon is-small is-left"><i class="fa fa-user"></i></span>
+                    </div>
                 </div>
+                <div class="field">
+                    <div class="control has-icons-left">
+                        <input type="password" class="input" id="userpw" placeholder="비밀번호">
+                        <span class="icon is-small is-left"><i class="fa fa-lock"></i></span>
+                    </div>
+                </div>
+                <button class="button is-dark" onclick="login()" style="width:100%">로그인</button>
+                <hr>
+                <button class="button is-danger" onclick="move_signup()" style="width:100%">회원가입</button>
             </div>
-            <button class="button is-dark" onclick="login()" style="width:100%">로그인</button>
-            <hr>
-            <button class="button is-danger" onclick="move_signup()" style="width:100%">회원가입</button>
         </div>
-    </div>
-</section>
+    </section>
 </body>
 </html>
