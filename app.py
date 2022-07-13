@@ -221,7 +221,7 @@ def game_post():
 
         return jsonify({'msg': '작성완료!'})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-        return redirect(url_for("home"))
+        return jsonify({'msg': '로그인 하지 않은 사용자는 리뷰를 작성할 수 없습니다.'})
 
 
 @app.route("/game", methods=["GET"])
