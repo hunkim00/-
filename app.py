@@ -6,7 +6,6 @@ import jwt
 import datetime
 import hashlib
 
-
 client = MongoClient('mongodb+srv://test:sparta@cluster0.2qnmgye.mongodb.net/?retryWrites=true&w=majority')
 db = client.dbsparta
 
@@ -113,17 +112,22 @@ def game_post():
     url_receive = request.form['url_give']
     star_receive = request.form['star_give']
     comment_receive = request.form['comment_give']
-    price_receive = request.form['price_give']
+    # 가격 입력 삭제
+    # price_receive = request.form['price_give']
+
 
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
-    data = requests.get(url_receive, headers=headers)
 
+    data = requests.get(url_receive, headers=headers)
     soup = BeautifulSoup(data.text, 'html.parser')
+
+
 
     image = soup.select_one(
         'body > app-root > div > app-game-overview > div > div.header-image-container > picture > source:nth-child(2)')[
         'srcset']
+
     title = soup.select_one(
         'body > app-root > div > app-game-overview > app-page-container-right-nav > div > div.d-flex.mb-4 > div.flex-grow-1 > div.card.mt-4 > div > h1').text.strip()
     maker = soup.select_one(
@@ -134,6 +138,8 @@ def game_post():
     platform = soup.select_one(
         'body > app-root > div > app-game-overview > app-page-container-right-nav > div > div.d-flex.mb-4 > div.flex-grow-1 > div.card.mt-4 > div > div > div.col-lg-7 > div.platforms').text[
                14:1000].strip()
+    critic = soup.select_one('body > app-root > div > app-game-overview > app-page-container-right-nav > div > div.d-flex.mb-4 > div.flex-grow-1 > div.card.mt-4 > div > div > div.col-lg-7 > div.mt-4 > app-game-scores-display > div > div > div:nth-child(2) > app-score-orb > div > div.inner-orb').text.strip()
+
 
     num_list = list(db.nums.find({}, {'_id': False}))
     count =len(num_list)+1
@@ -149,7 +155,9 @@ def game_post():
            'comment': comment_receive,
            'date': date,
            'platform': platform,
-           'price': price_receive,
+           #삭제 기존 price 정보에 평가점수가 입력됨.
+           # 'price': price_receive,
+           'price': critic,
            'num': count,
            'url': url_receive
            }
