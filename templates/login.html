@@ -22,11 +22,12 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
     <!-- Font Awesome CSS -->
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- ogamemu CSS -->
+    <link href="{{ url_for('static', filename='ogamemu.css') }}" rel="stylesheet">
 
     <!-- JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
-
 
     <script>
         function login() {
@@ -39,8 +40,6 @@
                         // 로그인시 토큰 받아오기
                         // mytoken 키 값으로 쿠키에 저장
                         $.cookie('mytoken', response['token']);
-
-                        alert('로그인 완료!')
                         window.location.href = '/'
                     } else {
                         // 로그인 실패시 에러 메시지
@@ -57,26 +56,32 @@
 
 </head>
 <body>
-<div class="section has-text-centered">
-    <h1 class="title">로그인 페이지</h1>
-    <div class="container" style="width:400px">
-        <div class="field">
-            <div class="control has-icons-left">
-                <input class="input" type="text" id="userid" placeholder="아이디">
-                <span class="icon is-small is-left"><i class="fa fa-user"></i></span>
-            </div>
-        </div>
-        <div class="field">
-            <div class="control has-icons-left">
-                <input type="password" class="input" id="userpw" placeholder="비밀번호">
-                <span class="icon is-small is-left"><i class="fa fa-lock"></i></span>
-            </div>
-        </div>
-        <button class="button is-primary" onclick="login()" style="width:100%">로그인</button>
-        <hr>
-        <button class="button is-primary is-outlined" onclick="move_signup()" style="width:100%">회원가입</button>
-
+<section class="hero is-white">
+    <div class="hero-body has-text-centered">
+        <h1 class="title">OGAMEMU</h1>
+        <h3 class="subtitle">오늘 게임 뭐 하지</h3>
     </div>
-</div>
+</section>
+<section class="section has-text-centered mt-6">
+    <div class="container">
+        <div class="has-background-white p-5" style="width:400px; margin:auto">
+            <div class="field">
+                <div class="control has-icons-left">
+                    <input class="input" type="text" id="userid" placeholder="아이디">
+                    <span class="icon is-small is-left"><i class="fa fa-user"></i></span>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control has-icons-left">
+                    <input type="password" class="input" id="userpw" placeholder="비밀번호">
+                    <span class="icon is-small is-left"><i class="fa fa-lock"></i></span>
+                </div>
+            </div>
+            <button class="button is-dark" onclick="login()" style="width:100%">로그인</button>
+            <hr>
+            <button class="button is-danger" onclick="move_signup()" style="width:100%">회원가입</button>
+        </div>
+    </div>
+</section>
 </body>
 </html>

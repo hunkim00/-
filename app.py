@@ -48,9 +48,26 @@ def login():
 def register():
     return render_template('signup.html')
 
+
 @app.route('/reviewpage')
 def review():
     return  render_template('reviewpage.html')
+
+
+# 마이페이지 화면
+@app.route('/mypage/<user_id>')
+def mypage(user_id):
+    # 각 사용자의 프로필과 글을 모아볼 수 있는 공간
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        status = (user_id == payload["user_id"])  # 내 프로필이면 True, 다른 사람 프로필 페이지면 False
+
+        user_info = db.user.find_one({'user_id': user_id}, {'_id': False, 'user_pw': False})
+        return render_template('mypage.html', user_info=user_info, status=status)
+    # 토큰 시간이 만료되었거나 해석에 실패했다면
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
 
 
 #######
@@ -102,13 +119,46 @@ def api_check_id():
 def api_signup():
     id_receive = request.form['user_id']
     pw_receive = request.form['user_pw']
+    name_receive = request.form['user_name']
     birthday_receive = request.form['user_birthday']
     # hashlib 함수로 비밀번호 암호화
     pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
 
-    db.user.insert_one({'user_id': id_receive, 'user_pw': pw_hash, 'user_birthday': birthday_receive})
+    db.user.insert_one({
+        'user_id': id_receive,
+        'user_pw': pw_hash,
+        'user_name': name_receive,
+        'user_comment': '',
+        'user_birthday': birthday_receive
+    })
 
     return jsonify({'result': 'success'})
+
+
+# 회원 수정 api
+@app.route('/api/update_user', methods=['POST'])
+def api_update_user():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_id = payload["user_id"]
+        name_receive = request.form["name_give"]
+        comment_receive = request.form["comment_give"]
+        doc = {
+            'user_name': name_receive,
+            'user_comment': comment_receive
+        }
+        db.user.update_one({'user_id': user_id}, {'$set': doc})
+        return jsonify({"result": "success", 'msg': '프로필을 업데이트했습니다.'})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
+
+
+# 나의 리뷰 불러오기 api
+@app.route('/api/my-reviews/<user_id>', methods=['GET'])
+def api_my_reviews(user_id):
+    reviews = list(db.games.find({'user_id': user_id}, {'_id': False}))
+    return jsonify({'result': 'success', 'reviews': reviews})
 
 
 @app.route("/game", methods=["POST"])

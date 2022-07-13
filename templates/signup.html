@@ -22,6 +22,7 @@
             let id = $('#userid').val()
             let password = $('#userpw').val()
             let password2 = $('#userpw2').val()
+            let username = $('#username').val()
             let birthday = $('#userbirthday').val()
 
             // id 겁사
@@ -56,6 +57,14 @@
             } else {
                 $("#help-password2").text("비밀번호가 일치합니다.").removeClass("is-danger").addClass("is-success")
             }
+            // 닉네임 검사
+            if (username == "") {
+                $("#help-username").text("닉네임을 입력해주세요.").removeClass("is-safe").addClass("is-danger")
+                $("#username").focus()
+                return;
+            } else {
+                $("#help-username").text("닉네임 입력 완료.").removeClass("is-danger").addClass("is-success")
+            }
             // 생일 검사
             if (birthday == "") {
                 $("#help-birthday").text("생일을 입력해주세요.").removeClass("is-safe").addClass("is-danger")
@@ -71,6 +80,7 @@
                 data: {
                     user_id: id,
                     user_pw: password,
+                    user_name: username,
                     user_birthday: birthday
                 },
                 success: function (response) {
@@ -139,7 +149,7 @@
                 <span class="icon is-small is-left"><i class="fa fa-user"></i></span>
             </div>
             <div class="control">
-                <button class="button is-primary" onclick="check_id()">중복확인</button>
+                <button class="button is-dark" onclick="check_id()">중복확인</button>
             </div>
         </div>
         <div class="field has-text-left mx-3">
@@ -164,16 +174,25 @@
             <p id="help-password2" class="help">비밀번호를 다시 한 번 입력해주세요.</p>
         </div>
         <div class="field">
+            <div class="control has-icons-left">
+                <input type="text" class="input" id="username" placeholder="닉네임">
+                <span class="icon is-small is-left"><i class="fa fa-id-badge"></i></span>
+            </div>
+        </div>
+        <div class="field has-text-left mx-3">
+            <p id="help-username" class="help">닉네임을 입력해주세요.</p>
+        </div>
+        <div class="field">
             <div class="control">
-                <input type="date" class="input" id="userbirthday" placeholder="My Birthday">
+                <input type="date" class="input" id="userbirthday" placeholder="생일">
             </div>
         </div>
         <div class="field has-text-left mx-3">
             <p id="help-birthday" class="help">생일을 입력해주세요.</p>
         </div>
         <div class="level is-mobile">
-            <button class="level-item button is-primary is-outlined" onclick="window.location.href = '/'">취소</button>
-            <button class="level-item button is-primary" onclick="signup()">회원가입</button>
+            <button class="level-item button is-danger" onclick="window.location.href = '/'">취소</button>
+            <button class="level-item button is-dark" onclick="signup()">회원가입</button>
         </div>
     </div>
 </div>
