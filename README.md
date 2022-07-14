@@ -1,5 +1,5 @@
 ---
-#### 항해99 7기 A반 11조 - 미니프로젝트1  
+#### 항해99 8기 A반 11조 - 미니프로젝트1  
 # 오겜무(오늘 게임 뭐하지?)  
 ---
 ![main_page](https://user-images.githubusercontent.com/15075501/178900303-f1bff205-cea4-4c9d-9be4-7f099c54cf6b.png)  
